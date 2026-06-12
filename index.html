@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Staicy Merin — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --black:   #040904;
+  --bg:      #060d06;
+  --surface: #0a150a;
+  --card:    #0e1c0e;
+  --green:   #4ade80;
+  --green2:  #22c55e;
+  --green3:  #86efac;
+  --deep:    #15803d;
+  --muted:   #4d7a5a;
+  --light:   #f0fff4;
+  --border:  rgba(74,222,128,0.13);
+}
+
+html{scroll-behavior:smooth}
+body{
+  background:var(--black);
+  color:var(--light);
+  font-family:'DM Sans',sans-serif;
+  overflow-x:hidden;
+}
+
+/* ── GLOW CANVAS ── */
+#glow-canvas{
+  position:fixed;inset:0;
+  z-index:0;pointer-events:none;
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;
+  z-index:300;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.1rem 7vw;
+  background:rgba(4,9,4,0.8);
+  backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{
+  font-family:'Playfair Display',serif;
+  font-weight:900;font-size:1.2rem;
+  color:var(--green);letter-spacing:0.01em;
+}
+.nav-links{display:flex;gap:2.2rem}
+.nav-links a{
+  text-decoration:none;color:var(--muted);
+  font-size:0.85rem;font-weight:500;letter-spacing:0.05em;
+  position:relative;transition:color 0.25s;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:-4px;left:0;
+  width:0;height:1.5px;background:var(--green);
+  transition:width 0.3s ease;
+}
+.nav-links a:hover,
+.nav-links a.active{color:var(--green)}
+.nav-links a:hover::after,
+.nav-links a.active::after{width:100%}
+
+section{position:relative;z-index:10}
+
+/* ══════════════════════════
+   HERO
+══════════════════════════ */
+#hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;
+  padding:9rem 7vw 6rem;
+}
+
+.hero-badge{
+  display:inline-flex;align-items:center;gap:0.55rem;
+  font-family:'DM Mono',monospace;
+  font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--green2);
+  background:rgba(34,197,94,0.07);
+  border:1px solid rgba(74,222,128,0.22);
+  padding:0.45rem 1.3rem;border-radius:100px;
+  margin-bottom:2.4rem;
+  animation:up 0.8s ease both;
+}
+.live-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--green2);
+  box-shadow:0 0 0 0 rgba(34,197,94,0.7);
+  animation:ping 2s ease-out infinite;
+}
+@keyframes ping{
+  0%{box-shadow:0 0 0 0 rgba(34,197,94,0.7)}
+  100%{box-shadow:0 0 0 10px rgba(34,197,94,0)}
+}
+
+.hero-name{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(4.5rem,12vw,10rem);
+  font-weight:900;line-height:0.95;
+  letter-spacing:-0.025em;
+  color:var(--light);
+  animation:up 0.9s 0.08s ease both;
+}
+.hero-name em{
+  font-style:italic;
+  color:var(--green);
+  display:block;
+  /* gentle continuous shimmer */
+  background:linear-gradient(90deg, var(--green2), var(--green3), var(--green2));
+  background-size:200% auto;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:shimmer 4s linear infinite;
+}
+@keyframes shimmer{
+  0%{background-position:0% center}
+  100%{background-position:200% center}
+}
+
+.hero-role{
+  margin-top:1.4rem;
+  font-size:clamp(1rem,2.4vw,1.25rem);
+  font-weight:300;letter-spacing:0.04em;
+  color:var(--muted);
+  min-height:1.8em;
+  animation:up 0.9s 0.18s ease both;
+}
+.typed{color:var(--green3);font-weight:500}
+.cur{
+  display:inline-block;width:2px;height:1em;
+  background:var(--green);vertical-align:text-bottom;margin-left:2px;
+  animation:blink 0.85s step-end infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+.hero-sub{
+  max-width:520px;
+  font-size:1rem;line-height:1.85;
+  color:var(--muted);
+  margin:1.4rem auto 0;
+  animation:up 0.9s 0.26s ease both;
+}
+
+.hero-ctas{
+  display:flex;gap:1.1rem;flex-wrap:wrap;
+  justify-content:center;
+  margin-top:2.8rem;
+  animation:up 0.9s 0.34s ease both;
+}
+.btn-solid{
+  padding:0.88rem 2.5rem;
+  background:var(--green2);color:#030903;
+  font-weight:700;font-size:0.9rem;letter-spacing:0.02em;
+  border-radius:100px;text-decoration:none;
+  box-shadow:0 4px 28px rgba(34,197,94,0.38);
+  transition:transform 0.22s,box-shadow 0.22s;
+}
+.btn-solid:hover{transform:translateY(-3px);box-shadow:0 10px 44px rgba(74,222,128,0.48)}
+.btn-ring{
+  padding:0.88rem 2.5rem;
+  border:1.5px solid rgba(74,222,128,0.28);
+  color:var(--green3);font-weight:500;font-size:0.9rem;
+  border-radius:100px;text-decoration:none;
+  transition:border-color 0.22s,color 0.22s,transform 0.22s;
+}
+.btn-ring:hover{border-color:var(--green);color:var(--green);transform:translateY(-3px)}
+
+/* ── divider ── */
+.div-wave{line-height:0;position:relative;z-index:10}
+.div-wave svg{display:block;width:100%}
+
+/* ══════════════════════════
+   ABOUT
+══════════════════════════ */
+#about{background:var(--surface);padding:8rem 7vw}
+.about-inner{
+  max-width:1080px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:5rem;align-items:center;
+}
+.eyebrow{
+  font-family:'DM Mono',monospace;
+  font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--green2);margin-bottom:0.9rem;
+}
+.sec-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2rem,3.5vw,2.9rem);
+  font-weight:700;line-height:1.12;
+  color:var(--light);margin-bottom:1.8rem;
+}
+.about-body p{
+  font-size:0.97rem;line-height:1.9;
+  color:var(--muted);margin-bottom:1rem;
+}
+.about-body strong{color:var(--green3)}
+
+/* interest pills */
+.interest-pills{display:flex;flex-wrap:wrap;gap:0.6rem;margin-top:1.6rem}
+.pill{
+  display:inline-flex;align-items:center;gap:0.45rem;
+  font-family:'DM Mono',monospace;font-size:0.73rem;
+  letter-spacing:0.06em;text-transform:uppercase;
+  padding:0.45rem 1.1rem;border-radius:100px;
+  background:rgba(34,197,94,0.08);
+  color:var(--green3);
+  border:1px solid rgba(74,222,128,0.2);
+  transition:background 0.2s,border-color 0.2s;
+}
+.pill:hover{background:rgba(34,197,94,0.14);border-color:rgba(74,222,128,0.45)}
+
+/* profile card */
+.profile-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:2.6rem 2.4rem;
+  position:relative;overflow:hidden;
+}
+/* animated top gradient bar */
+.profile-card::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--deep),var(--green2),var(--green3),var(--green2),var(--deep));
+  background-size:200% auto;
+  animation:bar-slide 3s linear infinite;
+}
+@keyframes bar-slide{
+  0%{background-position:0% center}
+  100%{background-position:200% center}
+}
+.pc-row{
+  display:flex;align-items:flex-start;gap:1rem;
+  padding:1.1rem 0;border-bottom:1px solid rgba(74,222,128,0.07);
+}
+.pc-row:last-child{border-bottom:none}
+.pc-icon{font-size:1.35rem;flex-shrink:0;margin-top:1px}
+.pc-key{
+  font-size:0.68rem;font-weight:600;letter-spacing:0.1em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:0.3rem;
+}
+.pc-val{font-size:0.95rem;font-weight:500;color:var(--light)}
+
+/* ══════════════════════════
+   SKILLS
+══════════════════════════ */
+#skills{background:var(--black);padding:8rem 7vw}
+.skills-inner{max-width:1080px;margin:0 auto}
+.skills-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:1.2rem;margin-top:3rem;
+}
+.skill-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:14px;padding:1.4rem 1.6rem;
+  display:flex;align-items:center;gap:1rem;
+  transition:transform 0.28s,border-color 0.28s,box-shadow 0.28s;
+  cursor:default;
+}
+.skill-card:hover{
+  transform:translateY(-4px);
+  border-color:rgba(74,222,128,0.42);
+  box-shadow:0 14px 40px rgba(0,0,0,0.5),0 0 24px rgba(34,197,94,0.1);
+}
+.sk-icon{font-size:1.55rem;flex-shrink:0}
+.sk-label{font-size:0.91rem;font-weight:500;color:var(--light)}
+
+/* ══════════════════════════
+   PROJECTS
+══════════════════════════ */
+#projects{background:var(--surface);padding:8rem 7vw}
+.projects-inner{max-width:1080px;margin:0 auto}
+.proj-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:1.6rem;margin-top:3.5rem;
+}
+.proj{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:18px;padding:2.2rem;
+  display:flex;flex-direction:column;gap:1.2rem;
+  position:relative;overflow:hidden;
+  transition:transform 0.3s,box-shadow 0.3s,border-color 0.3s;
+}
+/* shimmer sweep */
+.proj::after{
+  content:'';
+  position:absolute;top:0;left:-120%;
+  width:60%;height:100%;
+  background:linear-gradient(105deg,transparent,rgba(74,222,128,0.06),transparent);
+  transition:left 0.7s ease;
+  pointer-events:none;
+}
+.proj:hover::after{left:140%}
+.proj:hover{
+  transform:translateY(-6px);
+  border-color:rgba(74,222,128,0.38);
+  box-shadow:0 22px 60px rgba(0,0,0,0.6),0 0 40px rgba(34,197,94,0.08);
+}
+.proj-num{
+  font-family:'DM Mono',monospace;
+  font-size:0.63rem;letter-spacing:0.2em;
+  color:rgba(74,222,128,0.3);text-transform:uppercase;
+}
+.proj-icon{font-size:2.4rem;line-height:1}
+.proj-name{
+  font-family:'Playfair Display',serif;
+  font-size:1.28rem;font-weight:700;color:var(--light);
+}
+.proj-desc{
+  font-size:0.91rem;line-height:1.85;
+  color:var(--muted);flex:1;
+}
+.proj-tags{display:flex;flex-wrap:wrap;gap:0.5rem}
+.tag{
+  font-family:'DM Mono',monospace;
+  font-size:0.66rem;letter-spacing:0.07em;
+  padding:0.27rem 0.8rem;border-radius:100px;
+  background:rgba(34,197,94,0.07);
+  color:var(--green3);
+  border:1px solid rgba(74,222,128,0.17);
+}
+
+/* ══════════════════════════
+   CONTACT
+══════════════════════════ */
+#contact{background:var(--black);padding:8rem 7vw;text-align:center}
+.contact-inner{max-width:560px;margin:0 auto}
+.contact-inner .sec-title{margin-bottom:0.9rem}
+.contact-sub{
+  font-size:0.97rem;line-height:1.85;
+  color:var(--muted);margin-bottom:2.8rem;
+}
+.contact-btn{
+  display:inline-flex;align-items:center;gap:0.7rem;
+  font-size:0.97rem;font-weight:600;
+  color:#030903;background:var(--green2);
+  text-decoration:none;
+  padding:1.1rem 3rem;border-radius:100px;
+  box-shadow:0 4px 30px rgba(34,197,94,0.4);
+  transition:transform 0.22s,box-shadow 0.22s;
+  letter-spacing:0.01em;
+}
+.contact-btn:hover{
+  transform:translateY(-3px);
+  box-shadow:0 10px 50px rgba(74,222,128,0.5);
+}
+
+/* ── FOOTER ── */
+footer{
+  position:relative;z-index:10;
+  background:var(--surface);
+  border-top:1px solid var(--border);
+  text-align:center;padding:1.6rem 7vw;
+  font-family:'DM Mono',monospace;
+  font-size:0.75rem;color:var(--deep);letter-spacing:0.1em;
+}
+footer span{color:var(--green3)}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 0.75s ease,transform 0.75s ease}
+.reveal.visible{opacity:1;transform:none}
+.d1{transition-delay:0.1s}.d2{transition-delay:0.2s}.d3{transition-delay:0.3s}
+
+@keyframes up{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+
+@media(max-width:720px){
+  .about-inner{grid-template-columns:1fr;gap:3rem}
+  .proj-grid{grid-template-columns:1fr}
+  .skills-grid{grid-template-columns:1fr 1fr}
+  .nav-links{gap:1.3rem}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+
+<canvas id="glow-canvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Staicy Merin</div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-badge">
+    <span class="live-dot"></span>
+    Open to Opportunities
+  </div>
+
+  <h1 class="hero-name">
+    Staicy<em>Merin</em>
+  </h1>
+
+  <p class="hero-role">
+    <span class="typed" id="tw"></span><span class="cur"></span>
+  </p>
+
+  <p class="hero-sub">
+    Engineering student passionate about Cyber Security and Project Management — building purposeful, thoughtful software.
+  </p>
+
+  <div class="hero-ctas">
+    <a href="#projects" class="btn-solid">See My Work</a>
+    <a href="#contact" class="btn-ring">Get in Touch</a>
+  </div>
+</section>
+
+<div class="div-wave">
+  <svg viewBox="0 0 1440 70" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,35 C280,70 560,0 840,35 C1080,62 1300,10 1440,35 L1440,70 L0,70 Z" fill="#0a150a"/>
+  </svg>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-inner">
+    <div class="about-body reveal">
+      <div class="eyebrow">About Me</div>
+      <h2 class="sec-title">Building with<br>intention &amp;<br>curiosity</h2>
+      <p>I'm <strong>Staicy Merin</strong>, currently pursuing B.Tech at TOCH Institute of Science and Technology. I'm drawn to technology that solves real problems and makes a real difference.</p>
+      <p>I'm deeply interested in <strong>Cyber Security</strong> — protecting systems and understanding the ever-evolving landscape of digital threats. I'm also passionate about <strong>Project Management</strong> — learning how to lead ideas from concept to completion, efficiently and with purpose.</p>
+      <div class="interest-pills">
+        <span class="pill">🛡️ Cyber Security</span>
+        <span class="pill">📋 Project Management</span>
+        <span class="pill">💡 Innovation</span>
+      </div>
+    </div>
+
+    <div class="profile-card reveal d2">
+      <div class="pc-row">
+        <span class="pc-icon">🎓</span>
+        <div>
+          <div class="pc-key">Degree</div>
+          <div class="pc-val">Pursuing B.Tech</div>
+        </div>
+      </div>
+      <div class="pc-row">
+        <span class="pc-icon">🖥️</span>
+        <div>
+          <div class="pc-key">Department</div>
+          <div class="pc-val">Information Technology</div>
+        </div>
+      </div>
+      <div class="pc-row">
+        <span class="pc-icon">🏫</span>
+        <div>
+          <div class="pc-key">Institution</div>
+          <div class="pc-val">TOCH Institute of Science &amp; Technology</div>
+        </div>
+      </div>
+      <div class="pc-row">
+        <span class="pc-icon">🔒</span>
+        <div>
+          <div class="pc-key">Interest</div>
+          <div class="pc-val">Cyber Security</div>
+        </div>
+      </div>
+      <div class="pc-row">
+        <span class="pc-icon">📌</span>
+        <div>
+          <div class="pc-key">Also Interested In</div>
+          <div class="pc-val">Project Management</div>
+        </div>
+      </div>
+      <div class="pc-row">
+        <span class="pc-icon">✉️</span>
+        <div>
+          <div class="pc-key">Email</div>
+          <div class="pc-val">staicymerin203@gmail.com</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="div-wave" style="transform:rotate(180deg)">
+  <svg viewBox="0 0 1440 70" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,35 C280,70 560,0 840,35 C1080,62 1300,10 1440,35 L1440,70 L0,70 Z" fill="#060d06"/>
+  </svg>
+</div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="skills-inner">
+    <div class="eyebrow reveal">Competencies</div>
+    <h2 class="sec-title reveal">What I bring</h2>
+    <div class="skills-grid">
+      <div class="skill-card reveal"><span class="sk-icon">🛡️</span><span class="sk-label">Cyber Security</span></div>
+      <div class="skill-card reveal d1"><span class="sk-icon">📋</span><span class="sk-label">Project Management</span></div>
+      <div class="skill-card reveal d2"><span class="sk-icon">🧩</span><span class="sk-label">Problem Solving</span></div>
+      <div class="skill-card reveal d3"><span class="sk-icon">🤝</span><span class="sk-label">Teamwork</span></div>
+      <div class="skill-card reveal"><span class="sk-icon">💬</span><span class="sk-label">Communication</span></div>
+      <div class="skill-card reveal d1"><span class="sk-icon">🤖</span><span class="sk-label">AI / ML Concepts</span></div>
+      <div class="skill-card reveal d2"><span class="sk-icon">💻</span><span class="sk-label">Software Development</span></div>
+      <div class="skill-card reveal d3"><span class="sk-icon">🔍</span><span class="sk-label">Research &amp; Analysis</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="div-wave">
+  <svg viewBox="0 0 1440 70" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,20 C360,65 720,0 1080,45 C1260,62 1380,20 1440,35 L1440,70 L0,70 Z" fill="#0a150a"/>
+  </svg>
+</div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="projects-inner">
+    <div class="eyebrow reveal">Work</div>
+    <h2 class="sec-title reveal">Projects I've built</h2>
+    <div class="proj-grid">
+
+      <div class="proj reveal">
+        <div class="proj-num">Project — 01</div>
+        <div class="proj-icon">🌐</div>
+        <div class="proj-name">Personal Portfolio</div>
+        <div class="proj-desc">A responsive, visually crafted personal portfolio that communicates identity, skills and work at a glance. Built with clean UI principles and modern web techniques.</div>
+        <div class="proj-tags">
+          <span class="tag">HTML / CSS</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">UI Design</span>
+        </div>
+      </div>
+
+      <div class="proj reveal d1">
+        <div class="proj-num">Project — 02</div>
+        <div class="proj-icon">🩺</div>
+        <div class="proj-name">Injury Detection App</div>
+        <div class="proj-desc">An intelligent application using computer vision and machine learning to identify physical injuries from images, providing preliminary assessments and clear next steps.</div>
+        <div class="proj-tags">
+          <span class="tag">Python</span>
+          <span class="tag">Computer Vision</span>
+          <span class="tag">Machine Learning</span>
+        </div>
+      </div>
+
+      <div class="proj reveal d2">
+        <div class="proj-num">Project — 03</div>
+        <div class="proj-icon">🏋️</div>
+        <div class="proj-name">Workout Scheduler</div>
+        <div class="proj-desc">A smart fitness planning tool that helps users design, schedule and track personalised workout routines — balancing intensity, rest and variety to hit their goals.</div>
+        <div class="proj-tags">
+          <span class="tag">Web App</span>
+          <span class="tag">Scheduling</span>
+          <span class="tag">UX Design</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="div-wave" style="transform:rotate(180deg)">
+  <svg viewBox="0 0 1440 70" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,20 C360,65 720,0 1080,45 C1260,62 1380,20 1440,35 L1440,70 L0,70 Z" fill="#040904"/>
+  </svg>
+</div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="eyebrow reveal">Contact</div>
+    <h2 class="sec-title reveal">Let's connect</h2>
+    <p class="contact-sub reveal">Feel free to contact me.</p>
+    <a href="mailto:staicymerin203@gmail.com" class="contact-btn reveal">
+      ✉ &nbsp;staicymerin203@gmail.com
+    </a>
+  </div>
+</section>
+
+<footer>
+  <span>Staicy Merin</span> &nbsp;·&nbsp; © 2026 &nbsp;·&nbsp; Built with care
+</footer>
+
+<script>
+/* ── AURORA GLOW BACKGROUND ── */
+(function(){
+  const cv=document.getElementById('glow-canvas');
+  const cx=cv.getContext('2d');
+  let W,H,t=0;
+  function resize(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight}
+  resize();window.addEventListener('resize',resize);
+  const blobs=[
+    {bx:0.18,by:0.28,rx:0.48,sp:0.0005,col:'rgba(34,197,94,0.09)'},
+    {bx:0.82,by:0.65,rx:0.42,sp:0.0008,col:'rgba(74,222,128,0.07)'},
+    {bx:0.52,by:0.85,rx:0.36,sp:0.0006,col:'rgba(21,128,61,0.10)'},
+    {bx:0.08,by:0.72,rx:0.28,sp:0.0010,col:'rgba(134,239,172,0.05)'},
+  ];
+  function draw(){
+    cx.clearRect(0,0,W,H);t++;
+    blobs.forEach((b,i)=>{
+      const x=(b.bx+Math.sin(t*b.sp+i*2.1)*0.11)*W;
+      const y=(b.by+Math.cos(t*b.sp+i*1.7)*0.09)*H;
+      const r=b.rx*Math.min(W,H);
+      const g=cx.createRadialGradient(x,y,0,x,y,r);
+      g.addColorStop(0,b.col);g.addColorStop(1,'transparent');
+      cx.fillStyle=g;cx.fillRect(0,0,W,H);
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ── TYPEWRITER ── */
+(function(){
+  const phrases=['Engineering Student','Cyber Security Enthusiast','Project Management Learner','Builder & Problem Solver'];
+  let pi=0,ci=0,del=false;
+  const el=document.getElementById('tw');
+  function tick(){
+    const p=phrases[pi];
+    if(!del){ci++;el.textContent=p.slice(0,ci);if(ci===p.length){del=true;setTimeout(tick,2400);return;}setTimeout(tick,88);}
+    else{ci--;el.textContent=p.slice(0,ci);if(ci===0){del=false;pi=(pi+1)%phrases.length;}setTimeout(tick,42);}
+  }
+  setTimeout(tick,1100);
+})();
+
+/* ── SCROLL REVEAL ── */
+(function(){
+  const obs=new IntersectionObserver(en=>{en.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+})();
+
+/* ── NAV ACTIVE ── */
+(function(){
+  const secs=document.querySelectorAll('section[id]');
+  const links=document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll',()=>{
+    let cur='';
+    secs.forEach(s=>{if(window.scrollY>=s.offsetTop-140)cur=s.id});
+    links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur));
+  });
+})();
+</script>
+</body>
+</html>
